@@ -7,6 +7,12 @@ app.use(express.json())
 app.use(morgan("dev"))
 app.use(express.urlencoded({extended:true}))
 
+app.use((req, res, next) => {
+    req.header("Access-Control-Allow-Origin", "*")
+    req.header("Access-Control-Allow-Headers", "*")
+    next()
+})
+
 app.get("/", (req, res) => {
     res.status(200).json({
         message : "welcome to fintech web app api",
