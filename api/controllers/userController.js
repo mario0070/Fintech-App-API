@@ -7,7 +7,7 @@ const createUser = (req, res) => {
     .then(result => {
        if(result.length >= 1){
             res.status(200).json({
-                message : "User already exist"
+                message : "user already exist"
             })
        }else{
             bcrypt.hash(req.body.password, 10, (err, hash) => {
