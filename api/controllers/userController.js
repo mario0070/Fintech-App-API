@@ -1,5 +1,6 @@
 const userSchema = require("../model/userSchema")
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 const createUser = (req, res) => {
     userSchema.find({email : req.body.email})
@@ -21,9 +22,16 @@ const createUser = (req, res) => {
                 
                     user.save()
                     .then(data => {
+                        const token = jwt.sign({ 
+                            firstname : req.body.firstname,
+                            lastname : req.body.lastname,
+                            email : req.body.email,}, "secret", {expiresIn : "12h"}
+                        )
+
                         res.status(200).json({
                             message : "user created successfully",
-                            data
+                            data,
+                            "access-token" : token
                         })
                     })
                     .catch( err => {

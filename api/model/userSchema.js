@@ -8,6 +8,6 @@ const userSchema = new schema({
     email : {type : String, required : true},
     password : {type : String, required : true},
     profilePic : {type : String, default : null},
-})
+},{timestamps : true})
 
 module.exports = mongoose.model("User", userSchema)
