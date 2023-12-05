@@ -30,7 +30,12 @@ const createUser = (req, res) => {
 
                         res.status(200).json({
                             message : "user created successfully",
-                            data,
+                            user : {
+                                firstname : data.firstname,
+                                lastname : data.lastname,
+                                email : data.email,
+                                createdAt : data.createdAt,
+                            },
                             "access-token" : token
                         })
                     })
@@ -56,14 +61,65 @@ const createUser = (req, res) => {
    
 }
 
+const loginUser = (req, res) => {
+    userSchema.find({email : req.body.email})
+    .then(user => {
+       if(user.length >= 1){
+            bcrypt.compare(req.body.password, user[0].password, (err , bol) => {
+                if(bol){
+                   const token = jwt.sign({}, "secret")
+                res.status(200).json({
+                        message : "user logged  in",
+                        user: user.map(val => {
+                            return {
+                                id : val._id,
+                                email : val.email,
+                                firstname : val.firstname,
+                                lastname : val.lastname,
+                                profilePic : val.profilePic,
+                            }
+                        }),
+                        "access-token" : token
+                    })
+                }else{
+                    res.status(403).json({
+                        message : "incorrect credentials"
+                    })
+                }
+            })
+       }
+       else{
+        res.status(404).json({
+            message : "User does not exist"
+        })
+       }
+    })
+    .catch(err => {
+        res.status(500).json({
+            error : err
+        })
+    })
+
+}
 
 const getAllUser = (req, res) => {
-    res.json({
-        message : "all  user"
+   userSchema.find()
+   .select("firstname lastname email profilePic")
+   .then(data => {
+        res.status(200).json({
+            message : "users fetched successfully",
+            users : data
+        })
+   })
+   .catch(err => {
+    res.status(500).json({
+        error : err
     })
+   })
 }
 
 module.exports = {
     createUser, 
     getAllUser,
+    loginUser,
 }
