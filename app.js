@@ -8,8 +8,8 @@ app.use(morgan("dev"))
 app.use(express.urlencoded({extended:true}))
 
 app.use((req, res, next) => {
-    req.header("Access-Control-Allow-Origin", "*")
-    req.header("Access-Control-Allow-Headers", "*")
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers", "*")
     next()
 })
 
