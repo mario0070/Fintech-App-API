@@ -67,8 +67,12 @@ const loginUser = (req, res) => {
        if(user.length >= 1){
             bcrypt.compare(req.body.password, user[0].password, (err , bol) => {
                 if(bol){
-                   const token = jwt.sign({}, "secret")
-                res.status(200).json({
+                   const token = jwt.sign({
+                        email : user[0].email, 
+                        firstname : user[0].firstname,
+                        lastname : user[0].lastname,}, "secret", {expiresIn : "12h"}
+                    )
+                    res.status(200).json({
                         message : "user logged  in",
                         user: user.map(val => {
                             return {
