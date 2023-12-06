@@ -4,6 +4,7 @@ const userSchema = require("../model/userSchema")
 const transactions = (req, res) => {
    transactionSchema.find()
    .populate("recipient")
+   .populate("sender")
    .then(data => {
         res.status(200).json({
             data
