@@ -8,6 +8,7 @@ const userSchema = new schema({
     email : {type : String, required : true},
     password : {type : String, required : true},
     profilePic : {type : String, default : null},
+    balance : {type : Number, default : 0},
 },{timestamps : true})
 
 module.exports = mongoose.model("User", userSchema)

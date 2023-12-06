@@ -35,6 +35,7 @@ const createUser = (req, res) => {
                                 lastname : data.lastname,
                                 email : data.email,
                                 createdAt : data.createdAt,
+                                balance : data.balance
                             },
                             "access-token" : token
                         })
@@ -81,6 +82,7 @@ const loginUser = (req, res) => {
                                 firstname : val.firstname,
                                 lastname : val.lastname,
                                 profilePic : val.profilePic,
+                                balance : val.balance
                             }
                         }),
                         "access-token" : token

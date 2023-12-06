@@ -1,8 +1,10 @@
 const express = require("express")
 const app = express()
 const userRoutes = require("./api/routes/user")
+const transactionRoutes = require("./api/routes/transactionRoute")
 const morgan = require("morgan")
 const cors = require("cors")
+const checkAuth = require("./api/middleware/check-auth")
 
 app.use(express.json())
 app.use(morgan("dev"))
@@ -31,6 +33,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/user", userRoutes)
+app.use("/transact", checkAuth, transactionRoutes)
 
 app.use((req, res) => {
     res.status(404).json({
