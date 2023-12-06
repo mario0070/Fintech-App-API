@@ -110,7 +110,6 @@ const loginUser = (req, res) => {
 
 const getAllUser = (req, res) => {
    userSchema.find()
-   .select("firstname lastname email profilePic")
    .then(data => {
         res.status(200).json({
             message : "users fetched successfully",
@@ -124,8 +123,30 @@ const getAllUser = (req, res) => {
    })
 }
 
+const getUserByEmail = (req, res) => {
+    if(req.body.email){
+        userSchema.find({"email" : req.body.email})
+        .then(data => {
+            res.status(200).json({
+                message : "users fetched successfully",
+                users : data
+            })
+        })
+        .catch(err => {
+            res.status(500).json({
+                error : err
+            })
+        })  
+    }else{
+        res.status(404).json({
+            message : "user not found"
+        })
+    }
+ }
+
 module.exports = {
     createUser, 
     getAllUser,
     loginUser,
+    getUserByEmail,
 }
