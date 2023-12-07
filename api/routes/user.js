@@ -6,6 +6,6 @@ const checkAuth = require("../middleware/check-auth")
 route.get("/", checkAuth, userController.getAllUser)
 route.post("/signup", userController.createUser)
 route.post("/login", userController.loginUser)
-route.get("/get-user", userController.getUserByEmail)
+route.post("/get-user", userController.getUserByEmail)
 
 module.exports = route
