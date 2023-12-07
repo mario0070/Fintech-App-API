@@ -3,6 +3,7 @@ const userSchema = require("../model/userSchema")
 
 const transactions = (req, res) => {
    transactionSchema.find()
+   .sort({createdAt : "desc"})
    .populate("recipient")
    .populate("sender")
    .then(data => {
