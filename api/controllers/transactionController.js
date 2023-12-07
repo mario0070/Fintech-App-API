@@ -72,7 +72,38 @@ const sendTransact = (req, res) => {
     
 }
 
+const singleTransact = (req, res) => {
+    userSchema.findById(req.body.id)
+    .then(user => {
+        if(user){
+            transactionSchema.find({recipient : req.body.id})
+            .populate("sender")
+            .populate("recipient")
+            .then(credit_tx => {
+                transactionSchema.find({sender : req.body.id})
+                .populate("sender")
+                .populate("recipient")
+                .then(debit_tx => {
+                    res.status(200).json({
+                        total : credit_tx.length + debit_tx.length,
+                        debit_transact : debit_tx,
+                        credit_transact : credit_tx
+                    })
+                })
+               
+            })
+            .catch(err => res.status(404).json({error : err}))
+        }else{
+            res.status(404).json({message : "user does not exist"})
+        }
+        
+    })
+    .catch(err => res.status(500).json({error : err}))
+ }
+ 
+
 module.exports = {
     transactions,
     sendTransact,
+    singleTransact,
 }
