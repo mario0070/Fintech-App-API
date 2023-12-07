@@ -4,6 +4,6 @@ const txController = require("../controllers/transactionController")
 
 route.get("/", txController.transactions)
 route.post("/send", txController.sendTransact)
-route.get("/user-transact", txController.singleTransact)
+route.post("/user-transact", txController.singleTransact)
 
 module.exports = route
