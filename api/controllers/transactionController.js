@@ -93,11 +93,43 @@ const singleTransact = (req, res) => {
         
     })
     .catch(err => res.status(500).json({error : err}))
- }
+}
+
+const deposit = (req, res) => {
+    userSchema.find({"email": req.body.email})
+    .then(user => {
+        const tx = new transactionSchema({
+            amount : req.body.amount,
+            recipient : user[0]._id,
+            sender : "657353f3184167506e1816ab",
+        })
+        tx.save()
+        .then(data => {
+            const add_ops = parseInt(user[0].balance) + parseInt(req.body.amount)
+            userSchema.findByIdAndUpdate(user[0]._id, {"balance" : add_ops  })
+            .then(updated => {
+                res.status(200).json({message : "updated"})
+            })
+            .catch(err => {
+                res.status(500).json({err})
+            })
+
+            
+        })
+        .catch(error => {
+            res.status(500).json({error})
+        })
+
+    })
+    .catch(err => {
+        res.status(500).json({error : err})
+    })
+}
  
 
 module.exports = {
     transactions,
     sendTransact,
     singleTransact,
+    deposit,
 }

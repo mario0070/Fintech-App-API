@@ -12,12 +12,13 @@ const createUser = (req, res) => {
        }else{
             bcrypt.hash(req.body.password, 10, (err, hash) => {
                 if(hash){
+                    // const acct = Math.floor(100000000 + Math.random() * 900000000)
                     const user = new userSchema({
                         firstname : req.body.firstname,
                         lastname : req.body.lastname,
                         password : hash,
                         email : req.body.email,
-                        profilePic : req.body.profilePic,
+                        profilePic : req.body.profilePic
                     })
                 
                     user.save()
@@ -35,7 +36,7 @@ const createUser = (req, res) => {
                                 lastname : data.lastname,
                                 email : data.email,
                                 createdAt : data.createdAt,
-                                balance : data.balance
+                                balance : data.balance,
                             },
                             "access-token" : token
                         })
